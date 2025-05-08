@@ -1,82 +1,100 @@
-## 시스템 명령어
-hostname : ip 주소
-whoami : groot0 현 로그인 된 유저 네임
-pwd(print working directory) : 실행되고 있는 디렉토리 알려줘 `/home/groot0`
-cd : 전 디렉토리로 가기 `/home`
-id : 현 유저에 대한 식별 정보 출력 (사용자 아이디, 속한 그룹 아이디)
-uname : 들어와있는 시스템 정보 ( 운영체제 이름, 버전, 타입 등)
-     -a : 전체 정보 열람 가능
-     -r : 커널의 릴리즈 버전 출력
-man(manual) : 뒤에 다른 명령어 치면 해당 명령어 사용 설명서 나옴
-clear : 작업 화면 리셋
+1. 알고리즘 자료구조란?
+   - 자료구조 :  자료를 저장하기 위한 구조(공간), 대표적으로 배열이 있음
+   - 알고리즘 : 자료구조 내부의 자료들을 효율적으로 정리하는 방법, 정렬 알고리즘 등이 있음
+2. 시간 복잡도란?
+   - 시간 복잡도 : 코드가 실행되는 시간을 예측하는 함수
+     1) 코드 1줄 당 O(1)
+     2) n번 반복 for문인 경우 O(n)
+     3) n번, m번 반복 이중 포문인 경우 O(nm)
+     4) 배열 크기가 n인 sort 함수 정렬인 경우 O(n log n)
+3. 브루트포스 알고리즘이란? 
+   - 브루트포스 알고리즘 : 모든 경우의 수를 전부 탐색하는 알고리즘
+   - 가장 간단하고 쉽지만 효율이 좋지 않다는 단점이 있음
+4. sort 함수 사용법 정리
+   - \#include \<algorithm> 헤더 사용
+   - 기본적으로 오름차순 정렬 수행
+   - sort( 배열,배열 이름+크기)
+   - compare() 함수를 사용하면 내림차순 정렬 등 다양한 정렬을 만들 수 있음
+```C++
+// 내림차순 정렬 예시
+#include <iostream>
+#include <algorithm>
 
-## 읽기 명령어
-### groot 0
-ls : 현재 있는 디렉토리에 어떤 파일 or 폴더 있는지 보여줘
-	 -l : 폴더인지 파일인지 판별
-cat(concatenate) + 파일 명 : 파일 읽기
-	 --help : 명령어 설명
-	 파일1 > 파일 2 : 파일 1을 파일 2에 합치기
-### groot 1
-cd(Change Directory) 파일 or 폴더 명 / : 해당 디렉토리로 옮겨가기 (.. 은 전 디렉토리)
-\* flag = 비밀번호
+using namespace std;
 
-### groot 2
-cd + 파일 or 폴더 명에 띄어쓰기있을 때
-	 띄어쓰기 자리에 `\ + 띄어쓰기`
-	 첫 글자 입력 후 `Tab` 누르기 > 자동 완성
-	 `" "` or `' '`로 감싸기
+bool compare(int a, int b){
+	return a > b; // >의 방향을 반대로 바꾸면 오름차순
+}
+int main(void){
+	int arr[5]={2,4,6,1,3};
+	sort(arr,arr+5,compare)
+	for (int i=0; i<5;i++){
+		cout << arr[i] << ' ';
+	}
+}
+```
 
-### groot 3
-ls 했을 때 아무것도 안뜸 > 히든 파일 확인 하기
-	 -a : 히든 파일 나옴 (히든 파일은 앞에 `.` 붙어 있음)
+5. 새싹 문제 3개 풀고 시간 복잡도 계산
+   - 10872 팩토리얼
+![[Pasted image 20250404150753.png]]
+```C++
+#include <iostream>
 
-### groot 4
-ls 했을 때 큰 용량 파일일 때
-less 파일 or 폴더 명 : 새 탭창에서 파일 내용 만 볼 수 있음
-head : 큰 파일을 읽거나 어떤 종류의 파일 알고 잎을 때 1~10 번째줄만 출력
-	 -n (숫자) : 숫자 번쨰 줄 까지 출력
-tail : 마지막 10개의 줄만 출력
-	 -n (숫자) : 마지막부터 숫자개의 줄 출력
+using namespace std;
 
-## 쓰기 명령어
-### groot 5
-ls > permission denied
-	 -al : permission denied 된 이유 찾아보기
-touch + `이름`: `이름` 파일 만들어 줌
-echo `'문구'` > 파일명 : 파일에 `'문구'` 가 들어감
-cp(copy) `파일1` `파일2` : 파일1을 복사해서 파일2 생성
-mv(move) `파일명` `디렉토리명` : 파일 이동 및 파일 이름 변경
-mkdir(make directory) `newfolder` : 현재 디렉토리 안에 새 폴더 추가
-rm(remove) : 삭제
-	 -r : 폴더 삭제
-groups `username` : 유저가 어느 그룹 안에 있느냐
+int main()
+{
+	long n;
+	cin >> n;
+	long res = 1;
+	for (int i = 2;i <= n;i++) {
+		res *= i;
+	}
+	cout << res;
+}
+// 시간 복잡도 : O(n)
+```
 
-첫번째 비트
-		d (directory) : 폴더
-		\-  : 파일
-다음 9비트
-	 첫번쨰 3비트 : 유저 대한 권한
-		 r(read) = 4 : 읽기 가능
-		 w(write) = 2 : 쓰기 가능
-		 x(ececution) = 1 : 실행 가능
-		 유저한테 rw-권한 주고 싶을 때 4+2=6
-		 chmod `600(3비트씩 나눔)` `파일명` : 권한 수정 가능
-	 두번째 3비트 : 그룹 대한 권한
-	 세번째 3비트 : 그 외 유저들 대한 권한
+   - 2752 세 수 정렬
+![[Pasted image 20250404150915.png]]
+```C++
+#include <iostream>
+#include <algorithm>
 
-### groot 6
-base64 `파일명` : 민감한 정보 디코딩 해서 랜덤한 스트링으로 저장 하고 싶을 때
-	 `파일1` > `파일2` : `파일1` 인코딩해서 `파일2`에 저장 가능
-	 -d : 디코딩 하고 싶을 때 (디코딩 했는데도 랜덤 스트링일 때 : 여러번 인코딩 된 거임)
-\| : 한 명령어의 출력을 다른 명령어의 입력에 전달 할 때 사용
-	 base64 -d file.txt | base 64 -d : 디코딩 두번 할 때 처음 디코딩한 결과를 두번째 디코딩의 입력으로 전달 할 때
-grep `"찾을 단어"` : 해당 단어가 들어간 파일 찾음
-	 ls | grep "password" : 현 디렉토리 안의 password라는 단어가 들어간 파일 or 폴더 출력
+using namespace std;
 
-\>(redirector) : 아웃풋 옮길 때
-	 ls > test.txt : 현 디렉토리 ls 값을 test 라는 파일에 바로 저장 가능
-	 echo "world" > output.txt : output.txt의 내용과 상관 없이 덮어 씌우기
-	 echo "world" >> output.txt : output.txt에 내용 추가
+int main()
+{
+	int arr[3];
+	for (int i = 0;i < 3;i++) {
+		cin >> arr[i];
+	}
+	sort(arr, arr + 3);
+	for (int i = 0;i < 3;i++) {
+		cout << arr[i] << ' ';
+	}
 
-fin
+}
+// 시간 복잡도 O(3+3log3+3)=O(3log3+6)
+```
+
+   - 15964 이상한 기호
+![[Pasted image 20250404145400.png]]
+```C++
+#include <iostream>
+
+using namespace std;
+
+long cal(long a, long b) { // O(1)
+    long res = (a + b) * (a - b);
+    return res;
+}
+
+int main()
+{
+    long num1, num2;
+    cin >> num1;
+    cin >> num2; // O(2)
+    cout << cal(num1, num2); // O(1)
+}
+```
